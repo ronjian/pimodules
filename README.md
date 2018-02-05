@@ -6,8 +6,8 @@ Dependency:
 Install steps:  
 ```shell
 git clone https://github.com/ronjian/pimodules.git
-cd	pimodules
-python3 setup.py install
+cd pimodules
+sudo python3 setup.py install
 # verify 
 python3 -c "import pimodules; print('pimodules installed successfully')"
 ```

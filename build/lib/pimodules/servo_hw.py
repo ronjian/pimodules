@@ -11,7 +11,7 @@ class CONTROL:
 
 	Be careful to set the range to protest your servo.
 	"""
-	def __init__(self, PIN, STRIDE= 0.01, NOMINAL=1500, RANGE=1000):
+	def __init__(self, PIN, STRIDE= 0.01, NOMINAL=1500, RANGE=1000, reset=True):
 		self.STRIDE= STRIDE # step magnitude
 		self.NOMINAL= NOMINAL  # initial digital cycle/angle
 		self.RANGE = RANGE  # range limitation
@@ -19,9 +19,9 @@ class CONTROL:
 		self.MAX_DC = self.NOMINAL +  self.RANGE # high limit
 		self.MIN_DC = self.NOMINAL -  self.RANGE # low limit
 		self.PIN = PIN
-		self.start()
+		self.start(reset)
 
-	def start(self):
+	def start(self, reset=True):
 		self.pi = pigpio.pi()
 		if not self.pi.connected:
 			print("starting pigpiod")
@@ -31,9 +31,8 @@ class CONTROL:
 				print("can't start pigpiod")
 				exit()
 			self.pi = pigpio.pi()
-		self.pi.set_servo_pulsewidth(self.PIN, self.NOMINAL)
-		# give time to cycle
-		sleep(1)
+		if reset:
+			self.reset()
 
 	def step_move(self,direction=1.0):
 		"""
