@@ -42,6 +42,7 @@ class CONTROL:
 		Limit: servo can't cycle out of the given range.
 
 		:param direction: 1.0 or -1.0
+		:return current dc(position)
 		"""
 		dc = self.previous_dc + direction * self.RANGE * self.STRIDE
 		if dc > self.MAX_DC or dc < self.MIN_DC:
@@ -49,6 +50,8 @@ class CONTROL:
 		else:
 			self.pi.set_servo_pulsewidth(self.PIN, dc)  
 			self.previous_dc = dc
+
+		return dc
 
 
 	def direct_move(self, dc, given_time = 1.0):
